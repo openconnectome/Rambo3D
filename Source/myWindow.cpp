@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <QtOpenGL>
 #include <QtGui>
 #include "ControlPanel.h"
@@ -82,7 +81,6 @@ void myWindow::keyPressEvent( QKeyEvent *event )
                         controlPanel->viewPlane.distance = controlPanel->viewPlane.normal.dot( controlPanel->viewPlane.position );
                         setCurrentGlWidget();
                         controlPanel->sliceNumber += sign;
-                        //printf( "sliceNumber: %d\n" , controlPanel->sliceNumber );
                     }
                     else
                     {

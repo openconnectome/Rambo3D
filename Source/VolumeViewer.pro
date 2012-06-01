@@ -1,11 +1,8 @@
 TEMPLATE = app
 QT += opengl
 CONFIG += console
-LIBS += -lglew32
+LIBS += C:/QtSDK/glew-1.5.2/lib/libglew32.dll.a
 INCLUDEPATH += .
-INCLUDEPATH += "C:\msys\1.0\home\Ming\tiff-3.9.2\libtiff"
-
-# Input
 HEADERS += ./myWindow.h	\
     ControlPanel.h 	\
     glCamera.h 		\

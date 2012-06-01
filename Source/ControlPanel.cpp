@@ -12,11 +12,9 @@
 
 void ControlPanel::keyReleaseEvent( QKeyEvent *event )
 {
-
 }
 void ControlPanel::keyPressEvent( QKeyEvent *event )
 {
-
 }
 
 ControlPanel::ControlPanel( char* ImagePath , char* AnnotationPath , int ResX , int ResY , int ResZ , int timerInterval, QWidget *parent, char *name ) : QGLWidget( parent )
@@ -40,8 +38,6 @@ ControlPanel::ControlPanel( char* ImagePath , char* AnnotationPath , int ResX , 
         planeNormal = Point3D(0,0,1);
 
         OrthoProj = false;
-        //viewPlane = Plane3D( Point3D(1,1,1) , Point3D(.5,.5,.5) );
-        //viewPlane = Plane3D( Point3D(0,0,1) , Point3D( 0.5 , 0.5 , 0.5/this->resZ ) );
         viewPlane = Plane3D( Point3D(0,0,1) , Point3D( 0.5 , 0.5 , 0.5/this->resZ + 0.5 ) );
 
         overlay = 0;
@@ -104,7 +100,6 @@ void ControlPanel::wheelEvent(QWheelEvent *event)
 
             if(event->delta()>0) sliceNumber++;
             else                 sliceNumber--;
-            //printf( "sliceNumber: %d\n" , sliceNumber );
         }
         else
         {
@@ -172,122 +167,6 @@ void ControlPanel::timeOutSlot()
     timeOut();
 }
 
-void ControlPanel::slotSetGamma( int input )
-{
-    float value = float(input) / 100;
-    this->gamma = value*2;
-}
-void ControlPanel::slotSetInitialScale( int input )
-{
-    float value = float(input) / 100;
-    this->initialBlendingScale = value;
-
-}
-void ControlPanel::slotSetScaleMultiplier( int input )
-{
-    float value = float(input) / 100;
-    this->blendingScaleMultiplier = value;
-
-}
-void ControlPanel::slotSetSliceSpacing( int input )
-{
-    float value = float(input) / 100;
-    this->sliceSpacing = value * 10;
-    printf("value: %d / %f \n" , input , value );
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-// Function: loadTextureFromFile()
-// Goal:
-////////////////////////////////////////////////////////////////////////////////////////
-void ControlPanel::loadTextureFromFile()
-{
-    QImage image;
-    QString filename , padding;
-#define DATA_SOURCE 4
-#if DATA_SOURCE==1
-    resX = resY = 1024;
-    resZ = 16;
-    const int firstSlice = 1;
-    QString header = "../images/";
-    QString suffix = ".tiff";
-#elif DATA_SOURCE==2
-    resX = resY = 1024;
-    resZ = 16;
-    const int firstSlice = 3964;
-    QString header = "../images/ming-1024-cube-scale-0/";
-    QString suffix = ".png";
-#elif DATA_SOURCE==3
-    resX = resY = 1024;
-    resZ = 16;
-    const int firstSlice = 3404;
-    QString header = "../images/ming-2048-2048/";
-    QString suffix = ".png";
-#elif DATA_SOURCE==4
-    resX = 1500;
-    resY = 1500;
-    resZ = 185;
-    double scalingFactor = 10;
-    const int firstSlice = 10;
-    QString header = "../Downloads/bobby-scale4/";
-    QString suffix = ".png";
-#endif
-
-    int texSize = resX * resY * resZ;
-    GLubyte* pixels = new GLubyte[ texSize ];
-
-        int sliceShift=0; // if can't read the file, shift index by 1
-        for( int k=0 ; k<resZ ; k++ )
-        {
-            int fileSeqNo = k*scalingFactor + firstSlice + sliceShift; //shifting to start from an arbitrary slice
-#if DATA_SOURCE!=4
-            if     ( fileSeqNo<10  ) padding = "000";
-            else if( fileSeqNo<100 ) padding = "00";
-            else if( fileSeqNo<1000) padding = "0";
-            else                     padding = "";
-            filename =  header + padding + QString::number(fileSeqNo) + suffix;
-#else
-            filename =  header + QString::number(fileSeqNo) + suffix;
-#endif
-            if( !image.load( filename ) )
-            {
-                k--;
-                sliceShift++;
-                printf( "[%d] oops...failed to open %s\n" , fileSeqNo , filename.toLatin1().data() );
-                getchar();
-                exit(0);
-            }
-            else
-            {
-                for(int i=0;i<resX;i++) for(int j=0;j<resY;j++) pixels[i+resX*j+resX*resY*k] = image.pixel( i , j );
-                printf( "%s loaded.\n" , filename.toLatin1().data() );
-            }
-        }
-
-        glEnable( GL_TEXTURE_3D );
-        glGenTextures( 1 , &imgID );
-        glBindTexture( GL_TEXTURE_3D , imgID );
-        glPixelStorei( GL_UNPACK_ALIGNMENT , 1 );
-        glTexEnvi( GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , GL_MODULATE );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MAG_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MIN_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_S , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_T , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_R , GL_REPEAT );
-        glTexImage3D(
-                        GL_TEXTURE_3D,	// target
-                        0,			// level
-                        GL_LUMINANCE ,      // internal format
-                        resX,resY,resZ,     // width, height, depth
-                        0,			// border,
-                        GL_LUMINANCE ,      // input format
-                        GL_UNSIGNED_BYTE,	// type
-                        pixels		// GLvoid* pixels
-                    );
-        delete[] pixels;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////
 // Function: loadTextureFromURL()
 // Goal:
@@ -297,132 +176,6 @@ void ControlPanel::loadTextureFromURL( char* imagePath , int resX , int resY , i
     QFile file( imagePath );
     file.open( QFile::ReadOnly );
     uchar *memory = file.map( 0 , file.size() );
-        glEnable( GL_TEXTURE_3D );
-        glGenTextures( 1 , &ID );
-        glBindTexture( GL_TEXTURE_3D , ID );
-        glPixelStorei( GL_UNPACK_ALIGNMENT , 1 );
-        glTexEnvi( GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , GL_MODULATE );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MAG_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MIN_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_S , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_T , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_R , GL_REPEAT );
-        glTexImage3D(
-                        GL_TEXTURE_3D,	// target
-                        0,			// level
-                        GL_LUMINANCE ,      // internal format
-                        resX,resY,resZ,     // width, height, depth
-                        0,			// border,
-                        GL_LUMINANCE ,      // input format
-                        GL_UNSIGNED_BYTE,	// type
-                        memory		// GLvoid* pixels
-                    );
-    file.unmap( memory );
-}
-
-void ControlPanel::loadTextureFromURL_addColor( char* imagePath , int resX , int resY , int resZ , GLuint& ID )
-{
-    QFile file( imagePath );
-    file.open( QFile::ReadOnly );
-    uchar *memory = file.map( 0 , file.size() );
-
-    printf("input file size: %d\n", int(file.size()));
-
-    /*
-    int count = 0;
-    bool flags[256];
-    for( int i=0 ; i<256 ; i++ ) flags[i]=false;
-    for( int i=0 ; i<resX*resY*resZ ; i++ )
-    {
-        int index = int( memory[i] );
-        if( !flags[index] )
-        {
-            printf("color: %d\n",index);
-            flags[ index ] = true;
-            count++
-        }
-    }*/
-
-    const float color[] =
-    {
-        0.0 , 0.0 , 0.0 ,
-        1.0 , 0.9 , 0.0 ,
-        4.9999999466443301e-001, 5.0000000344275786e-001, 8.2337434043373436e-001,
-        2.0114405825132109e-001, 7.9885594085928679e-001, 7.9885593214709927e-001,
-        7.9885593667759525e-001, 2.0114407125252362e-001, 7.9885593699062651e-001,
-        7.9885593749944261e-001, 2.0114406513860156e-001, 2.0114407364558948e-001,
-        8.2337432774684272e-001, 5.0000000965814795e-001, 5.0000001326991206e-001,
-        7.9885592817847384e-001, 7.9885593484706785e-001, 7.9885593665752785e-001,
-        7.9885593574693392e-001, 7.9885593960612900e-001, 2.0114406773900328e-001,
-        5.0000000022817237e-001, 1.7662566437509977e-001, 5.0000000631753805e-001,
-        4.9999997914267075e-001, 8.2337433767017887e-001, 4.9999998376415572e-001,
-        2.0114406099296209e-001, 2.0114405601616636e-001, 7.9885593380016773e-001,
-        2.0114407295858006e-001, 2.0114406655554781e-001, 2.0114406646611030e-001,
-        5.0000001616709044e-001, 5.0000000892636043e-001, 1.7662565865144095e-001,
-        2.0114406329091217e-001, 7.9885592875262157e-001, 2.0114406262283549e-001,
-        1.7662566964420179e-001, 4.9999998966646908e-001, 4.9999998776014309e-001
-    };
-printf("allocating....%u\n",file.size()*3);
-    float* data = new float[ file.size()*3 ];
-printf("DONE!\n");
-    static time_t timeSeed = time(NULL);
-    for( int i=0 ; i<resX*resY*resZ ; i++ )
-    {
-        switch( memory[i] )
-        {
-            case uchar( 0 ): data[i*3]=color[0 ]; data[i*3+1]=color[1 ]; data[i*3+2]=color[2 ]; break;
-            case uchar(255): data[i*3]=color[3 ]; data[i*3+1]=color[4 ]; data[i*3+2]=color[5 ]; break;
-            /*
-            case uchar(103): data[i*3]=color[6 ]; data[i*3+1]=color[7 ]; data[i*3+2]=color[8 ]; break;
-            case uchar(14 ): data[i*3]=color[9 ]; data[i*3+1]=color[10]; data[i*3+2]=color[11]; break;
-            case uchar(107): data[i*3]=color[12]; data[i*3+1]=color[13]; data[i*3+2]=color[14]; break;
-            case uchar(20 ): data[i*3]=color[15]; data[i*3+1]=color[16]; data[i*3+2]=color[17]; break;
-            case uchar(105): data[i*3]=color[18]; data[i*3+1]=color[19]; data[i*3+2]=color[20]; break;
-            case uchar(216): data[i*3]=color[21]; data[i*3+1]=color[22]; data[i*3+2]=color[23]; break;
-            case uchar(250): data[i*3]=color[24]; data[i*3+1]=color[25]; data[i*3+2]=color[26]; break;
-            case uchar(202): data[i*3]=color[27]; data[i*3+1]=color[28]; data[i*3+2]=color[29]; break;
-            case uchar(192): data[i*3]=color[30]; data[i*3+1]=color[31]; data[i*3+2]=color[32]; break;
-            case uchar(102): data[i*3]=color[33]; data[i*3+1]=color[34]; data[i*3+2]=color[35]; break;
-            case uchar(128): data[i*3]=color[36]; data[i*3+1]=color[37]; data[i*3+2]=color[38]; break;
-            case uchar(147): data[i*3]=color[39]; data[i*3+1]=color[40]; data[i*3+2]=color[41]; break;
-            case uchar(205): data[i*3]=color[42]; data[i*3+1]=color[43]; data[i*3+2]=color[44]; break;
-            case uchar(217): data[i*3]=color[45]; data[i*3+1]=color[46]; data[i*3+2]=color[47]; break;
-            */
-            //data[i*3]=data[i*3+1]=data[i*3+2]=0.0;
-        default:
-            srand( memory[i]* timeSeed );
-            data[i*3  ] = double(rand())/RAND_MAX;
-            data[i*3+1] = double(rand())/RAND_MAX;
-            data[i*3+2] = double(rand())/RAND_MAX;
-        }
-    }
-
-        glEnable( GL_TEXTURE_3D );
-        glGenTextures( 1 , &ID );
-        glBindTexture( GL_TEXTURE_3D , ID );
-        glPixelStorei( GL_UNPACK_ALIGNMENT , 1 );
-        glTexEnvi( GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , GL_MODULATE );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MAG_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MIN_FILTER , GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_S , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_T , GL_REPEAT );
-        glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_R , GL_REPEAT );
-        glTexImage3D(
-                        GL_TEXTURE_3D,	// target
-                        0,			// level
-                        GL_RGB ,      // internal format
-                        resX,resY,resZ,     // width, height, depth
-                        0,			// border,
-                        GL_RGB ,      // input format
-                        GL_FLOAT,	// type
-                        data		// GLvoid* pixels
-                    );
-    file.unmap( memory );
-    delete data;
-}
-
-void ControlPanel::loadFakeTexture( GLuint& ID )
-{
     glEnable( GL_TEXTURE_3D );
     glGenTextures( 1 , &ID );
     glBindTexture( GL_TEXTURE_3D , ID );
@@ -433,34 +186,74 @@ void ControlPanel::loadFakeTexture( GLuint& ID )
     glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_S , GL_REPEAT );
     glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_T , GL_REPEAT );
     glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_R , GL_REPEAT );
-
-    int res=512;
-    int axis=res/2;
-    int shift=5;
-    uchar* memory = new uchar[res*res*res];
-    for( int i=0 ; i<res ; i++ )
-        for( int j=0 ; j<res ; j++ )
-            for( int k=0 ; k<res ; k++ )
-            {
-                int index = i*res*res + j*res + k;
-                int test = int(( i<axis+shift && i>axis-shift )) +
-                           int(( j<axis+shift && j>axis-shift )) +
-                           int(( k<axis+shift && k>axis-shift ))  ;
-                if( test==2 ) memory[ index ] = uchar(255);
-                else          memory[ index ] = 0;
-            }
-
     glTexImage3D(
                     GL_TEXTURE_3D,	// target
                     0,			// level
                     GL_LUMINANCE ,      // internal format
-                    res,res,res,     // width, height, depth
+                    resX,resY,resZ,     // width, height, depth
                     0,			// border,
                     GL_LUMINANCE ,      // input format
                     GL_UNSIGNED_BYTE,	// type
                     memory		// GLvoid* pixels
                 );
-    delete memory;
+    file.unmap( memory );
+}
+
+void ControlPanel::loadTextureFromURL_addColor( char* imagePath , int resX , int resY , int resZ , GLuint& ID )
+{
+    QFile file( imagePath );
+    file.open( QFile::ReadOnly );
+
+    uchar *memory = file.map( 0 , file.size() );
+    float* data = new float[ file.size()*3 ];
+
+    static time_t timeSeed = time(NULL);
+    for( int i=0 ; i<resX*resY*resZ ; i++ )
+    {
+        if( memory[i]==uchar(0) )
+        {
+            data[i*3  ] = 0.;
+            data[i*3+1] = 0.;
+            data[i*3+2] = 0.;
+        }
+        else
+        if( memory[i]==uchar(255) )
+        {
+            data[i*3  ] = 0.;
+            data[i*3+1] = 1.;
+            data[i*3+2] = 1.;
+        }
+        else
+        {
+            srand( memory[i]* timeSeed );
+            data[i*3  ] = double(rand())/RAND_MAX;
+            data[i*3+1] = double(rand())/RAND_MAX;
+            data[i*3+2] = double(rand())/RAND_MAX;
+        }
+    }
+
+    glEnable( GL_TEXTURE_3D );
+    glGenTextures( 1 , &ID );
+    glBindTexture( GL_TEXTURE_3D , ID );
+    glPixelStorei( GL_UNPACK_ALIGNMENT , 1 );
+    glTexEnvi( GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , GL_MODULATE );
+    glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MAG_FILTER , GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_MIN_FILTER , GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_S , GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_T , GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_3D , GL_TEXTURE_WRAP_R , GL_REPEAT );
+    glTexImage3D(
+                    GL_TEXTURE_3D,	// target
+                    0,			// level
+                    GL_RGB ,            // internal format
+                    resX,resY,resZ,     // width, height, depth
+                    0,			// border,
+                    GL_RGB ,            // input format
+                    GL_FLOAT,           // type
+                    data		// GLvoid* pixels
+                );
+    file.unmap( memory );
+    delete data;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -469,25 +262,24 @@ void ControlPanel::loadFakeTexture( GLuint& ID )
 ////////////////////////////////////////////////////////////////////////////////////////
 void ControlPanel::initializeGL()
 {
-        glewInit();
+    glewInit();
 
-        glShadeModel(GL_SMOOTH);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClearDepth(1.0f);
+    glShadeModel(GL_SMOOTH);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0f);
 
-        glDisable(GL_LIGHTING);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-        camera.position     = Point3D( 0.5f , 0.5f , 2.7f );
-        camera.direction    = Point3D( 0.0f , 0.0f ,-1.0f );
-        camera.up           = Point3D( 0.0f , 1.0f , 0.0f );
-        camera.right        = Point3D( 1.0f , 0.0f , 0.0f );
+    camera.position     = Point3D( 0.5f , 0.5f , 2.7f );
+    camera.direction    = Point3D( 0.0f , 0.0f ,-1.0f );
+    camera.up           = Point3D( 0.0f , 1.0f , 0.0f );
+    camera.right        = Point3D( 1.0f , 0.0f , 0.0f );
 
     loadTextureFromURL         ( imgPath , resX , resY , resZ , imgID );
     loadTextureFromURL_addColor( anoPath , resX , resY , resZ , anoID );
-    //loadFakeTexture( anoID );
 
     ShaderProgram = NULL;
     VertexShader = FragmentShader = NULL;
@@ -659,20 +451,7 @@ void ControlPanel::getIntersections( std::vector< Point3D >& iPoints )
 // Goal: Drawing a Box
 ////////////////////////////////////////////////////////////////////////////////////////
 void ControlPanel::drawBox( Point3D min , Point3D max )
-{/*
-    glEnable(GL_LINE_STIPPLE);
-    glLineStipple(1,0x00FF);
-    glPolygonMode( GL_FRONT , GL_LINE  );
-    glPolygonMode( GL_BACK  , GL_POINT );
-    glBegin( GL_QUADS );
-        glVertex3f( max[0],max[1],max[2] );    glVertex3f( min[0],max[1],max[2] );    glVertex3f( min[0],min[1],max[2] );    glVertex3f( max[0],min[1],max[2] );
-        glVertex3f( max[0],min[1],min[2] );    glVertex3f( min[0],min[1],min[2] );    glVertex3f( min[0],max[1],min[2] );    glVertex3f( max[0],max[1],min[2] );
-        glVertex3f( max[0],max[1],max[2] );    glVertex3f( max[0],min[1],max[2] );    glVertex3f( max[0],min[1],min[2] );    glVertex3f( max[0],max[1],min[2] );
-        glVertex3f( min[0],max[1],min[2] );    glVertex3f( min[0],min[1],min[2] );    glVertex3f( min[0],min[1],max[2] );    glVertex3f( min[0],max[1],max[2] );
-        glVertex3f( max[0],max[1],min[2] );    glVertex3f( min[0],max[1],min[2] );    glVertex3f( min[0],max[1],max[2] );    glVertex3f( max[0],max[1],max[2] );
-        glVertex3f( max[0],min[1],max[2] );    glVertex3f( min[0],min[1],max[2] );    glVertex3f( min[0],min[1],min[2] );    glVertex3f( max[0],min[1],min[2] );
-    glEnd();
-*/
+{
     glDisable(GL_LINE_STIPPLE);
     glPolygonMode( GL_FRONT , GL_POINT );
     glPolygonMode( GL_BACK  , GL_LINE  );
@@ -692,50 +471,6 @@ void ControlPanel::drawBox( Point3D min , Point3D max )
 ////////////////////////////////////////////////////////////////////////////////////////
 void ControlPanel::grabOrhoView( QImage &imageXY , QImage &imageYZ , QImage &imageZX )
 {
-    /*
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    GLint viewport[4];
-    glGetIntegerv( GL_VIEWPORT , viewport );
-    double aspectRatio = double( viewport[3] ) / viewport[2];
-
-    glMatrixMode( GL_PROJECTION );
-    glPushMatrix();
-        glLoadIdentity();
-        glMatrixMode( GL_MODELVIEW );
-        glPushMatrix();
-            glLoadIdentity();
-            glTranslatef( -1 , -1 , -1 );
-            glScalef( 2 , 2 , 2 );
-            glColor3f( 1 , 0 , 0 );
-            glLineWidth( 3.0 );
-            glBegin( GL_LINE_LOOP );
-                glVertex2f( 0 , 0 );
-                glVertex2f( 1 , 0 );
-                glVertex2f( 1 , 1 );
-                glVertex2f( 0 , 1 );
-            glEnd();
-
-            glEnable ( GL_TEXTURE_3D );
-            glDisable( GL_DEPTH_TEST );
-            glBindTexture( GL_TEXTURE_3D , texID );
-            glTexEnvi( GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , GL_MODULATE );
-            glColor4f( 1.0f , 1.0f , 1.0f , 0.5 * gamma );
-
-            glPolygonMode( GL_FRONT_AND_BACK , GL_FILL );
-            glBegin( GL_POLYGON );
-                glTexCoord3f( 0 , 0 , viewPlane.position[2] );     glVertex2f( 0 , 0 );
-                glTexCoord3f( 1 , 0 , viewPlane.position[2] );     glVertex2f( 1 , 0 );
-                glTexCoord3f( 1 , 1 , viewPlane.position[2] );     glVertex2f( 1 , 1 );
-                glTexCoord3f( 0 , 1 , viewPlane.position[2] );     glVertex2f( 0 , 1 );
-            glEnd();
-
-            glDisable( GL_TEXTURE_3D );
-            glEnable( GL_DEPTH_TEST );
-
-        glPopMatrix();
-        glMatrixMode( GL_PROJECTION );
-    glPopMatrix();
-    */
     RayCamera cam = camera;
     Plane3D plane = viewPlane;
     int oldWidth = currentWidth;
@@ -874,7 +609,6 @@ void ControlPanel::paintGL()
         drawQuads(1.0,1.0, 1.0);
         glDisable(GL_CULL_FACE);
 
-
         glUseProgram( ShaderProgram->programId() );
         //glBindFramebufferEXT( GL_FRAMEBUFFER_EXT , framebuffer );
         glBindFramebufferEXT( GL_FRAMEBUFFER_EXT , 0 );
@@ -904,6 +638,7 @@ void ControlPanel::paintGL()
         glDisable(GL_TEXTURE_2D);
 
         glUseProgram( 0 );
+
         // Draw the Bounding Boxes
         glDisable( GL_TEXTURE_2D);
         glLineWidth( 3 );
@@ -920,7 +655,6 @@ void ControlPanel::paintGL()
 
     glUseProgram(0);
     glBindFramebufferEXT( GL_FRAMEBUFFER_EXT , 0 );
-    //glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, temp_buffer[1], 0);
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, 0, 0);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     camera.drawOpenGL();
@@ -972,6 +706,7 @@ void ControlPanel::paintGL()
     glDisable( GL_BLEND      );
     glDisable( GL_TEXTURE_3D );
     glEnable ( GL_DEPTH_TEST );
+
     //Draw the outline
     glLineWidth( 5 );
     glPolygonMode( GL_FRONT_AND_BACK , GL_LINE );
@@ -1011,7 +746,7 @@ void ControlPanel::paintGL()
         glTranslatef( viewPlane.position.p[0] , viewPlane.position.p[1] , viewPlane.position.p[2] );
         glColor3f( 1.0f , 0.3f , 0.6f );
         gluSphere( quad , .01 , 10 , 10  );
-        //glPointSize(5.0); glBegin( GL_POINTS ); glVertex3f(0,0,0); glEnd();
+
         glLineWidth(2);
         glBegin(GL_LINES);
             glVertex3f(0,0,0);
@@ -1021,7 +756,6 @@ void ControlPanel::paintGL()
             glTranslatef( offset.p[0] , offset.p[1] , offset.p[2] );
             glColor3f( 0.3f , 0.5f , 1.0f );
             gluSphere( quad , .01 , 10 , 10  );
-            //glPointSize(5.0); glBegin( GL_POINTS ); glVertex3f(0,0,0); glEnd();
         glPopMatrix();
     glPopMatrix();
 

@@ -31,8 +31,6 @@ private:
     QLabel* imageLabelZX;
 
     bool isShiftDown;
-
 };
-
 
 #endif //MYWINDOW_H

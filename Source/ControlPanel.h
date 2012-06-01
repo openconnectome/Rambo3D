@@ -1,12 +1,10 @@
 #ifndef CONTROLPANEL_H
 #define CONTROLPANEL_H
 
-#define MISHA_CODE 1
 #define DEFAULT_WIN_WIDTH  800
 #define DEFAULT_WIN_HEIGHT 800
 #define DEFAULT_FOV 50.0
 #include <qgl.h>
-#include <QHash>
 #include <time.h>
 #include "glCamera.h"
 #include "geometry.h"
@@ -102,26 +100,15 @@ private:
 signals:
     void clicked();
 
-public slots:
-    void slotSetGamma           ( int input );
-    void slotSetInitialScale    ( int input );
-    void slotSetScaleMultiplier ( int input );
-    void slotSetSliceSpacing    ( int input );
-
-
-//
-// testing GLSL shaders...
-//
+    //
+    // GLSL stuffs
+    //
 public:
-    //void render_buffer_to_screen( GLuint ID );
-    //void loadFake3DTexture( GLuint &ID );
-    //void loadFake2DTexture( GLuint &ID );
-    void loadFakeTexture( GLuint &ID );
     void LoadShader(QString vshader, QString fshader);
     bool isUsingShader;
 private:
-    GLint texloc;
-    GLint volume_texloc;
+    GLint  texloc;
+    GLint  volume_texloc;
     GLuint backface_buffer , temp_buffer[2];
     GLuint framebuffer;
     GLuint fake2Dtexture;
