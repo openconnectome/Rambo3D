@@ -1,0 +1,34 @@
+
+==================== MOUSE ===========================
+
+Right  mouse button: drawing the zoom-in box
+LEFT   mouse button: translating the camera
+MIDDLE mouse button: rotating the camera
+
+WHEEL: moving camera backward/forward
+
+SHIFT + WHEEL: advancing the viewing plane (same as SHIFT+UP/DOWN)
+SHIFT + RIGHT: rotating the viewing plane around the pivot
+SFHIT + LEFT:  translating the pivot
+
+
+==================== KEYBOARD ==========================
+
+UP  : moving the camera forward
+DOWN: moving the camera backward
+
+SHIFT+UP  : moving the viewing plane forward
+SHIFT+DOWN: moving the viewing plane backward
+
+R: resetting the viewing plane
+
+Q,W: rotation around Y axis
+A,Z: rotation around X axis
+S,x: rotation around Z axis
+
+3: setting the viewing plane to X-Y plane 
+SHIFT+3: resetting the camera to look at X-Y plane from top
+(Simiarly for 1 and 2)
+
+O: toggle orthographics/perspective projection
+Esc: exit the viewer
