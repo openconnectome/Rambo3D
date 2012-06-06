@@ -17,12 +17,75 @@ you will need to have Python installed along with NumPy and h5py (whose win7-64
 installers are all included in the package as well). 
 
 For now, the easiest way to get through the whole plumbing process is to use 
-the provided batch-file (demo.bat).
+the provided batch script (demo.bat):
 
-If there is any problem, let me know: ming@cs.jhu.edu
 
+============================ START OF THE SCRIPT ===============================
+
+:: Specify here the minimum coordinate of the bounding box
+SET XSTART=5000
+SET YSTART=8000
+SET ZSTART=968
+
+:: Specify here the size (#voxels) of the data
+SET XRES=512
+SET YRES=512
+SET ZRES=64
+
+:: Leave the rest untouched
+SET /A XEND=%XSTART%+%XRES%
+SET /A YEND=%YSTART%+%YRES%
+SET /A ZEND=%ZSTART%+%ZRES%
+SET ANNO=http://openconnecto.me/annotate/kanno/hdf5/1/%XSTART%,%XEND%/%YSTART%,%YEND%/%ZSTART%,%ZEND%/
+SET IMGS=http://openconnecto.me/cutout/kasthuri11/hdf5/1/%XSTART%,%XEND%/%YSTART%,%YEND%/%ZSTART%,%ZEND%/
+hdf5Flatten.py %ANNO% ano.data
+hdf5Flatten.py %IMGS% img.data
+VolumeViewer.exe --dRes %XRES% %YRES% %ZRES% --img img.data --ano ano.data
+
+============================  END  OF THE SCRIPT ===============================
+
+
+If there is any problem, let me know at: ming@cs.jhu.edu
 
 --Ming
 
-PS. The plumbing is just of the time being and we are working on the improvement 
+
+PS1. The plumbing is just of the time being and we are working on the improvement 
 of the setup interface.
+
+PS2. See below for the short description of the UI:
+
+
+[MOUSE]
+
+Right  mouse button: drawing the zoom-in box
+LEFT   mouse button: translating the camera
+MIDDLE mouse button: rotating the camera
+
+WHEEL: moving camera backward/forward
+
+SHIFT + WHEEL: advancing the viewing plane (same as SHIFT+UP/DOWN)
+SHIFT + RIGHT: rotating the viewing plane around the pivot
+SFHIT + LEFT:  translating the pivot
+
+
+[KEYBOARD]
+
+UP  : moving the camera forward
+DOWN: moving the camera backward
+
+SHIFT+UP  : moving the viewing plane forward
+SHIFT+DOWN: moving the viewing plane backward
+
+R: resetting the viewing plane
+
+Q,W: rotation around Y axis
+A,Z: rotation around X axis
+S,x: rotation around Z axis
+
+3: setting the viewing plane to X-Y plane 
+SHIFT+3: resetting the camera to look at X-Y plane from top
+(Simiarly for 1 and 2)
+
+O: toggle orthographics/perspective projection
+Esc: exit the viewer
