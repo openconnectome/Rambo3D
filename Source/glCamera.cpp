@@ -1,4 +1,10 @@
 #include <math.h>
+
+#include <GL/glu.h>
+#include <qgl.h>
+#include <qapplication.h>
+
+
 #include <QtOpenGL>
 #include "glCamera.h"
 

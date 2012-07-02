@@ -1,4 +1,9 @@
-#include <GL/glew.h>
+
+#define GL_GLEXT_PROTOTYPES 1
+#include <GL/glu.h>
+
+
+//#include <GL/glew.h>
 #include <QtOpenGL>
 #include <qapplication.h>
 #include <qtimer.h>
@@ -262,7 +267,7 @@ void ControlPanel::loadTextureFromURL_addColor( char* imagePath , int resX , int
 ////////////////////////////////////////////////////////////////////////////////////////
 void ControlPanel::initializeGL()
 {
-    glewInit();
+    //glewInit();
 
     glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

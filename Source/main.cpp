@@ -1,3 +1,5 @@
+#include <GL/glew.h>
+
 #include <QApplication>
 #include "myWindow.h"
 #include "CmdLineParser.h"
@@ -37,6 +39,8 @@ int main( int argc , char *argv[] )
                 params[i]->writeValue( valueString );
                 printf( "\t--%s %s \n" , params[i]->name , valueString );
         }
+
+    glewInit();
 
     QApplication app( argc , argv );
     myWindow window( Image.value , Annotation.value , DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
