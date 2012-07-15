@@ -8,6 +8,11 @@ cmdLineString         Image( "img" ) , Annotation( "ano" );
 cmdLineIntArray< 3 >  DataRes( "dRes" );
 cmdLineReadable* params[]={ &Image , &Annotation , &DataRes };
 
+
+#include "voxel.h"
+
+
+
 void ShowUsage( char* ex )
 {
         printf( "\n");
@@ -44,6 +49,18 @@ int main( int argc , char *argv[] )
 
     QApplication app( argc , argv );
     myWindow window( Image.value , Annotation.value , DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
-    window.show();
-    return app.exec();
+    //window.show();
+    //return app.exec();
+
+
+    char* ImagePath = Image.value;
+    char* AnnotationPath = Annotation.value;
+    int resX = DataRes.values[0];
+    int resY = DataRes.values[1];
+    int resZ = DataRes.values[2];
+
+    Voxel voxel(ImagePath, AnnotationPath, resX, resY, resZ);
+
+    return 0;
+
 }

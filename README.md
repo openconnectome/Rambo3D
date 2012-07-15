@@ -98,3 +98,20 @@ If there is any problem, let me know at: ming@cs.jhu.edu
 
 PS1. The plumbing is just of the time being and we are working on the improvement 
 of the setup interface.
+
+
+
+
+
+
+// Dynamic Voxel Cache and Display
+// - Juneki (jhong29@jhu.edu)
+
+I intend to accomplish the dynamic voxel cache in 3 main steps.
+1. Determine the voxels that we need given the viewing plane.           VoxelOracle.cpp
+2. Look to see if the data required is available in the cache.          CacheMaintain.cpp
+      Otherwise, make a requests for it.
+      And if possible, return a lower resolution version of the data.
+3. Take the data provided to us from the cache and render it.           HierarchyRenderer.cpp
+
+Each step will request information from the previous step in order to function correctly.

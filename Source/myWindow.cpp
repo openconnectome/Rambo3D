@@ -6,32 +6,33 @@
 myWindow::myWindow( char* ImagePath , char* AnnoPath , int DataResX , int DataResY , int DataResZ )
 {
         QGridLayout *mainLayout = new QGridLayout;
-
+printf("yo ho~ 2 \n");
         controlPanel = new ControlPanel( ImagePath , AnnoPath , DataResX , DataResY , DataResZ , 30 );
         connect( controlPanel , SIGNAL(clicked()) , this , SLOT(setCurrentGlWidget()) );
         mainLayout->addWidget( controlPanel , 0 , 0 , 3 , 3 );
-
+printf("yo ho~ 3 \n");
         imageLabelXY = new QLabel();
         imageLabelXY->setMaximumHeight( 250 );
         imageLabelXY->setMaximumWidth ( 250 );
         imageLabelXY->setMinimumHeight( 250 );
         imageLabelXY->setMinimumWidth ( 250 );
         mainLayout->addWidget( imageLabelXY , 0 , 3 , 1 , 1 );
-
+printf("yo ho~ 4 \n");
         imageLabelYZ = new QLabel();
         imageLabelYZ->setMaximumHeight( 250 );
         imageLabelYZ->setMaximumWidth ( 250 );
         mainLayout->addWidget( imageLabelYZ , 1 , 3 , 1 , 1 );
-
+printf("yo ho~ 5 \n");
         imageLabelZX = new QLabel();
         imageLabelZX->setMaximumHeight( 250 );
         imageLabelZX->setMaximumWidth ( 250 );
         mainLayout->addWidget( imageLabelZX , 2 , 3 , 1 , 1 );
-
+printf("yo ho~ 6 \n");
         setLayout(mainLayout);
         this->resize( 1024 , 768 );
         currentGlWidget = controlPanel;
         isShiftDown = false;
+printf("yo ho~ 7 \n");
 }
 
 void myWindow::setCurrentGlWidget()
