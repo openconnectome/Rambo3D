@@ -9,7 +9,7 @@ cmdLineIntArray< 3 >  DataRes( "dRes" );
 cmdLineReadable* params[]={ &Image , &Annotation , &DataRes };
 
 
-#include "voxel.h"
+#include "DynamicVoxelHierarchy/HierarchyRenderer.h"
 
 
 
@@ -53,13 +53,18 @@ int main( int argc , char *argv[] )
     //return app.exec();
 
 
+
+    //--------------------------------------------------------
+
     char* ImagePath = Image.value;
     char* AnnotationPath = Annotation.value;
     int resX = DataRes.values[0];
     int resY = DataRes.values[1];
     int resZ = DataRes.values[2];
 
-    Voxel voxel(ImagePath, AnnotationPath, resX, resY, resZ);
+
+     Voxel v = Voxel();
+     HierarchyRenderer hierarchyRenderer = HierarchyRenderer();
 
     return 0;
 
