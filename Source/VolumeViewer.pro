@@ -11,10 +11,20 @@ HEADERS += ./myWindow.h	\
     ControlPanel.h 	\
     glCamera.h 		\
     geometry.h 		\
-    CmdLineParser.h
+    CmdLineParser.h \
+    DynamicVoxelHierarchy/VoxelOracle.h \
+    DynamicVoxelHierarchy/voxel.h \
+    DynamicVoxelHierarchy/CacheMaintain.h \
+    DynamicVoxelHierarchy/HierarchyRenderer.h
 SOURCES += ./main.cpp 	\
     myWindow.cpp 	\
     ControlPanel.cpp 	\
     glCamera.cpp 	\
     geometry.cpp 	\
-    CmdLineParser.cpp
+    CmdLineParser.cpp \
+    DynamicVoxelHierarchy/VoxelOracle.cpp \
+    DynamicVoxelHierarchy/voxel.cpp \
+    DynamicVoxelHierarchy/CacheMaintain.cpp \
+    DynamicVoxelHierarchy/HierarchyRenderer.cpp
+
+
