@@ -10,7 +10,6 @@ class VoxelOracle
     int zoomedIn;
     Plane3D viewingPlane;
 
-
 public:
     VoxelOracle();
     VoxelOracle(int zoomedIn, Plane3D viewingPlane);

@@ -12,8 +12,13 @@ class HierarchyRenderer
 public:
     HierarchyRenderer(VoxelOracle oracle = VoxelOracle(), CacheMaintain cache = CacheMaintain());
 
-    void renderDynamicVoxels();
+    //** Will render one voxel on the screen
     void render(Voxel v);
+
+    //** Uses the voxelOracle and the cache to figure out and render the correct voxels on the screen
+    void renderDynamicVoxels();
+
+
 };
 
 #endif // HIERARCHYRENDERER_H

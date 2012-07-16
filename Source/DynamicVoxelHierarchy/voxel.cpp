@@ -1,6 +1,6 @@
 #include "voxel.h"
 
-//** Constructor
+//** Default Constructor
 Voxel::Voxel()
 {
     char defaultName[] = "Default Name";
@@ -13,6 +13,7 @@ Voxel::Voxel()
     Data = defaultData;
 }
 
+//** Constructor
 Voxel:: Voxel(char* ID , int ResolutionX , int ResolutionY , int ResolutionZ , char* Data )
 {
     this->ID = ID;
