@@ -49,13 +49,14 @@ int main( int argc , char *argv[] )
 
     QApplication app( argc , argv );
     myWindow window( Image.value , Annotation.value , DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
-    //window.show();
-    //return app.exec();
+    window.show();
+    return app.exec();
 
 
 
     //--------------------------------------------------------
 
+    /*
     char* ImagePath = Image.value;
     char* AnnotationPath = Annotation.value;
     int resX = DataRes.values[0];
@@ -67,5 +68,6 @@ int main( int argc , char *argv[] )
      HierarchyRenderer hierarchyRenderer = HierarchyRenderer();
 
     return 0;
+    */
 
 }
