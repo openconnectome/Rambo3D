@@ -21,10 +21,11 @@ void HierarchyRenderer::renderDynamicVoxels()
     for(unsigned int i=0; i < VoxelsNeeded.size(); i++)
     {
         Voxel v = VoxelsNeeded[i];
+        string ID = v.getID();
 
-        if(cache.isInCache(v))
+        if(cache.isInCache(ID))
         {
-            v = cache.getFromCache(v);
+            v = cache.getFromCache(ID);
         }
         else
         {
@@ -34,4 +35,3 @@ void HierarchyRenderer::renderDynamicVoxels()
         render(v);
     }
 }
-
