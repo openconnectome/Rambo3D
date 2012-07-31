@@ -9,8 +9,8 @@ cmdLineIntArray< 3 >  DataRes( "dRes" );
 cmdLineReadable* params[]={ &Image , &Annotation , &DataRes };
 
 
-#include "HierarchyRenderer.h"
-#include "CacheMaintain.h"
+#include "DynamicVoxelHierarchy/HierarchyRenderer.h"
+#include "DynamicVoxelHierarchy/CacheMaintain.h"
 
 
 
