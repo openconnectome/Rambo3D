@@ -9,7 +9,8 @@ cmdLineIntArray< 3 >  DataRes( "dRes" );
 cmdLineReadable* params[]={ &Image , &Annotation , &DataRes };
 
 
-#include "DynamicVoxelHierarchy/HierarchyRenderer.h"
+#include "HierarchyRenderer.h"
+#include "CacheMaintain.h"
 
 
 
@@ -25,6 +26,7 @@ void ShowUsage( char* ex )
 
 int main( int argc , char *argv[] )
 {
+    /*
     cmdLineParse( argc-1 , &argv[1] , sizeof(params) / sizeof(cmdLineReadable*) , params , 0 );
 
     if( !DataRes.set || !Image.set || !Annotation.set )
@@ -52,22 +54,13 @@ int main( int argc , char *argv[] )
     window.show();
     return app.exec();
 
-
+*/
 
     //--------------------------------------------------------
 
-    /*
-    char* ImagePath = Image.value;
-    char* AnnotationPath = Annotation.value;
-    int resX = DataRes.values[0];
-    int resY = DataRes.values[1];
-    int resZ = DataRes.values[2];
 
 
-     Voxel v = Voxel();
-     HierarchyRenderer hierarchyRenderer = HierarchyRenderer();
+    CacheMaintain *cachemaintain = new CacheMaintain();
 
-    return 0;
-    */
 
 }
