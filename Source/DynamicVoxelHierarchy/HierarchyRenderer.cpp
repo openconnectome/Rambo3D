@@ -1,11 +1,42 @@
 #include "HierarchyRenderer.h"
 
+#include <iostream>
+#include <fstream>
+#include <string>
 
-HierarchyRenderer::HierarchyRenderer(VoxelOracle oracle, CacheMaintain cache)
+
+using std::string;
+using std::ifstream;
+using std::cout;
+using std::endl;
+
+
+HierarchyRenderer::HierarchyRenderer()
+{
+    VoxelOracle *newOracle = new VoxelOracle();
+    CacheMaintain *newCache = new CacheMaintain();
+    this->oracle = newOracle;
+    this->cache = newCache;
+}
+
+HierarchyRenderer::HierarchyRenderer(VoxelOracle* oracle, CacheMaintain* cache)
 {
     this->oracle = oracle;
     this->cache = cache;
 }
+
+//** Gets the VoxelOracle object
+VoxelOracle* HierarchyRenderer::getOracle()
+{
+    return oracle;
+}
+
+//** Gets the CacheMaintain object
+CacheMaintain* HierarchyRenderer::getCache()
+{
+    return cache;
+}
+
 
 //** Will render one voxel on the screen
 void HierarchyRenderer::render(Voxel v)
@@ -16,22 +47,20 @@ void HierarchyRenderer::render(Voxel v)
 //** Uses the voxelOracle and the cache to figure out and render the correct voxels on the screen
 void HierarchyRenderer::renderDynamicVoxels()
 {
-    std::vector<Voxel> VoxelsNeeded = oracle.determineVoxelsNeeded();
+    std::vector<Voxel> VoxelsNeeded = oracle->determineVoxelsNeeded();
+    int size = VoxelsNeeded.size();
 
-    for(unsigned int i=0; i < VoxelsNeeded.size(); i++)
+    int i =0;
+    for(i = 0; i < size; i++)
     {
-        Voxel v = VoxelsNeeded[i];
+        Voxel v = VoxelsNeeded.at(i);
+
         string ID = v.getID();
+        cout << "Looking for Voxel ID: " << ID << endl;
+        int resolution = v.getResolution();
 
-        if(cache.isInCache(ID))
-        {
-            v = cache.getFromCache(ID);
-        }
-        else
-        {
-            v = Voxel();
-        }
+        Voxel v2 = cache->getVoxelData(ID,resolution);
 
-        render(v);
+        render(v2);
     }
 }

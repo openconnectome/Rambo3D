@@ -2,7 +2,12 @@
 #define CACHEMAINTAIN_H
 
 #include "voxel.h"
-typedef std::string string;
+#include "voxelDatabase.h"
+#include "timer.h"
+
+#include <string>
+#include <vector>
+#include <list>
 
 /*
 The implementation for a cache object was taken from:
@@ -10,6 +15,7 @@ http://patrickaudley.com/code/project/lrucache
 */
 #include "DynamicVoxelHierarchy/lru_cache/src/lru_cache.h"
 
+typedef std::string string;
 
 class CacheMaintain
 {
@@ -17,26 +23,32 @@ class CacheMaintain
 public:
 
     int cacheCapacity;
+    int hierarchySize;
 
     typedef LRUCache<std::string,Voxel> cacheType;
-    cacheType *cache;
+    std::vector<cacheType*> cacheHierarchy;
 
+    voxelDatabase database;
 
     void test();
 
     //** Constructors
     CacheMaintain();
-    CacheMaintain(int size);
+    CacheMaintain(int cacheCapacity,int hierarchySize);
 
-    //** Given a requested voxel, we make a request for the voxel and return the same voxel filled with data.
-    Voxel getVoxelData(string ID);
+    //** Gets the Voxel data. First checks to see if it exists in the cache. Requests it if it doesnt.
+    Voxel getVoxelData(string ID, int resolution=0);
 
-    //** Similar function to getVoxelData. We could probably merge the two functions together.
+    //** Requests a voxel. The request could go to the harddrive or across the network.
     Voxel requestVoxel(string ID);
 
     //** We check to see if the voxel is in our cache hierarchy
-    Voxel getFromCache(string ID);
     bool isInCache(string ID);
+    bool isInCache(string ID, int resolution);
+
+    void printCache();
+
+    void insertVoxelData(string ID, Voxel v, int resolution);
 
 private:
      void setCache();
