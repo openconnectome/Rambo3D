@@ -24,6 +24,7 @@ using std::cout;
 using std::endl;
 
 
+
 void test1();
 void test2();
 void test3();
@@ -42,11 +43,11 @@ void ShowUsage( char* ex )
 }
 
 
+
 int main( int argc , char *argv[] )
 {
 
-    cmdLineParse( argc-1 , &argv[1] , sizeof(params) /
-sizeof(cmdLineReadable*) , params , 0 );
+    cmdLineParse( argc-1 , &argv[1] , sizeof(params) /sizeof(cmdLineReadable*) , params , 0 );
 
     if( !DataRes.set || !Image.set || !Annotation.set )
     {
@@ -69,8 +70,7 @@ sizeof(cmdLineReadable*) , params , 0 );
     glewInit();
 
     QApplication app( argc , argv );
-    myWindow window( Image.value , Annotation.value ,
-DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
+    myWindow window( Image.value , Annotation.value , DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
     window.show();
     return app.exec();
 
@@ -80,7 +80,9 @@ DataRes.values[0] , DataRes.values[1] , DataRes.values[2] );
 
     //test2();
 
+
     //test3();
+
 }
 
 
@@ -109,12 +111,10 @@ void test2()
     //Cache maintain
     int cacheCapacity = 10;
     int hierarchySize = 10;
-    CacheMaintain* cachemaintain = new
-CacheMaintain(cacheCapacity,hierarchySize);
+    CacheMaintain* cachemaintain = new CacheMaintain(cacheCapacity,hierarchySize);
 
     //Hierarchy Renderer
-    HierarchyRenderer* hierarchyRenderer = new
-HierarchyRenderer(voxeloracle,cachemaintain);
+    HierarchyRenderer* hierarchyRenderer = new HierarchyRenderer(voxeloracle,cachemaintain);
 
 
 
@@ -152,12 +152,10 @@ void test3()
     //Cache maintain
     int cacheCapacity = 10;
     int hierarchySize = 10;
-    CacheMaintain* cachemaintain = new
-CacheMaintain(cacheCapacity,hierarchySize);
+    CacheMaintain* cachemaintain = new CacheMaintain(cacheCapacity,hierarchySize);
 
     //Hierarchy Renderer
-    HierarchyRenderer* hierarchyRenderer = new
-HierarchyRenderer(voxeloracle,cachemaintain);
+    HierarchyRenderer* hierarchyRenderer = new HierarchyRenderer(voxeloracle,cachemaintain);
 
 
 
@@ -183,3 +181,4 @@ HierarchyRenderer(voxeloracle,cachemaintain);
     hierarchyRenderer->renderDynamicVoxels();
 
 }
+

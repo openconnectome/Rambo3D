@@ -19,7 +19,7 @@ CacheMaintain::CacheMaintain()
     hierarchySize = 10;
     setCache();
 
-    database = voxelDatabase();
+//    database = voxelDatabase();
 }
 
 //** Constructor
@@ -29,7 +29,7 @@ CacheMaintain::CacheMaintain(int cacheCapacity, int hierarchySize)
     this->hierarchySize = hierarchySize;
     setCache();
 
-    database = voxelDatabase();
+//    database = voxelDatabase();
 }
 
 //** Instantiates the cache object

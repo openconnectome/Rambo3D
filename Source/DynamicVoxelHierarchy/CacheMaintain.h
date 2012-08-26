@@ -2,8 +2,13 @@
 #define CACHEMAINTAIN_H
 
 #include "voxel.h"
-#include "voxelDatabase.h"
+//#include "voxelDatabase.h"
 #include "timer.h"
+
+// HDF5. The server that we request data from uses HDF5
+#include <H5Cpp.h>
+using namespace H5;
+
 
 #include <string>
 #include <vector>
@@ -28,7 +33,7 @@ public:
     typedef LRUCache<std::string,Voxel> cacheType;
     std::vector<cacheType*> cacheHierarchy;
 
-    voxelDatabase database;
+ //   voxelDatabase database;
 
     void test();
 
