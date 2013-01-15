@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Volumeviewer by openconnectome</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/openconnectome/VolumeViewer">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/openconnectome/VolumeViewer/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/openconnectome/VolumeViewer/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Volumeviewer</h1>
+          <p>remote 3D GPU viewer of raw data and annotations integrated with our spatial database, annotation database, and ontology</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/openconnectome">openconnectome</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Introduction</h1>
+
+<p>At this point, for prebuilt binaries we only provide a win32 executbable
+(VolumeViewer.exe).</p>
+
+<p>Before you run the executable, make sure the driver of your video card is 
+up to date (the generic one coming with windows does not work).</p>
+
+<p>The general usage of the executable is:</p>
+
+<p>VolumeViewer.exe --img img.data --ano ano.data --dRes xRes yRes zRes</p>
+
+<p>where img.data and ano.data are the volumes downloaded from the cut-out service,
+and xRes/yRes/zRes together specify the data resolution.</p>
+
+<p>Notice that the volume here needs to be a flattened hdf5 cube. For convenience
+in the package we provide a python script for doing that. To run the script, you
+you will need to have Python installed along with NumPy and h5py (whose win7-64
+installers are all included in the package as well). </p>
+
+<p>For now, the easiest way to get through the whole plumbing process is to use 
+the provided batch script (demo.bat):</p>
+
+<h1>Demo Script</h1>
+
+<p>:: Specify here the minimum coordinate of the bounding box</p>
+
+<pre><code>SET XSTART=5000
+SET YSTART=8000
+SET ZSTART=968
+</code></pre>
+
+<p>:: Specify here the size (#voxels) of the data</p>
+
+<pre><code>SET XRES=512
+SET YRES=512
+SET ZRES=64
+</code></pre>
+
+<p>:: Leave the rest untouched</p>
+
+<pre><code>SET /A XEND=%XSTART%+%XRES%
+SET /A YEND=%YSTART%+%YRES%
+SET /A ZEND=%ZSTART%+%ZRES%
+SET ANNO=http://openconnecto.me/annotate/kanno/hdf5/1/%XSTART%,%XEND%/%YSTART%,%YEND%/%ZSTART%,%ZEND%/
+SET IMGS=http://openconnecto.me/cutout/kasthuri11/hdf5/1/%XSTART%,%XEND%/%YSTART%,%YEND%/%ZSTART%,%ZEND%/
+hdf5Flatten.py %ANNO% ano.data
+hdf5Flatten.py %IMGS% img.data
+VolumeViewer.exe --dRes %XRES% %YRES% %ZRES% --img img.data --ano ano.data
+</code></pre>
+
+<h1>User Interface</h1>
+
+<h3>Mouse</h3>
+
+<ul>
+<li>Right  mouse button: drawing the zoom-in box</li>
+<li>LEFT   mouse button: translating the camera</li>
+<li><p>MIDDLE mouse button: rotating the camera</p></li>
+<li><p>WHEEL: moving camera backward/forward</p></li>
+<li><p>SHIFT + WHEEL: advancing the viewing plane (same as SHIFT+UP/DOWN)</p></li>
+<li><p>SHIFT + RIGHT: rotating the viewing plane around the pivot</p></li>
+<li><p>SFHIT + LEFT:  translating the pivot</p></li>
+</ul><h3>KEYBOARD</h3>
+
+<ul>
+<li>UP  : moving the camera forward</li>
+<li>DOWN: moving the camera backward</li>
+<li>SHIFT+UP  : moving the viewing plane forward</li>
+<li><p>SHIFT+DOWN: moving the viewing plane backward</p></li>
+<li><p>R: resetting the viewing plane</p></li>
+<li><p>Q,W: rotation around Y axis</p></li>
+<li><p>A,Z: rotation around X axis</p></li>
+<li><p>S,X: rotation around Z axis</p></li>
+<li><p>3: setting the viewing plane to X-Y plane </p></li>
+<li><p>SHIFT+3: resetting the camera to look at X-Y plane from top
+(Simiarly for 1 and 2)</p></li>
+<li><p>O: toggle orthographics/perspective projection</p></li>
+<li><p>Esc: exit the viewer</p></li>
+</ul><h1>Notes</h1>
+
+<p>If there is any problem, let me know at: <a href="mailto:ming@cs.jhu.edu">ming@cs.jhu.edu</a></p>
+
+<p>--Ming</p>
+
+<p>PS1. The plumbing is just of the time being and we are working on the improvement 
+of the setup interface.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
