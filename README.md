@@ -99,5 +99,5 @@ If there is any problem, let me know at: ming@cs.jhu.edu
 PS1. The plumbing is just of the time being and we are working on the improvement 
 of the setup interface.
 
-
+PS2. The webpage for this project is http://openconnectome.github.com/VolumeViewer/
 
