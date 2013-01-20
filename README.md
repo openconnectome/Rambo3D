@@ -1,8 +1,19 @@
 Introduction
 ============
 
-At this point, for prebuilt binaries we only provide a win32 executbable
-(VolumeViewer.exe).
+This page explains how to use our VolumeViewer.  
+It can be used for any of the data for which we have build the cutout service,
+which includes Bock11 and Kasthuri11.
+As more datasets become available, we will update here.
+
+
+Installation
+============
+
+
+At this point, for prebuilt binaries we only provide a win32 executeable
+(VolumeViewer.exe). But we have successfully compiled it on mac and linux boxes.  
+If you have any trouble, just email ming@cs.jhu.edu.
 
 Before you run the executable, make sure the driver of your video card is 
 up to date (the generic one coming with windows does not work).
