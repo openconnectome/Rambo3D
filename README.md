@@ -12,7 +12,7 @@ Installation
 
 
 At this point, for prebuilt binaries we only provide a win32 executeable
-(Rambo3D.exe). But we have successfully compiled it on mac and linux boxes.  
+(VolumeViewer.exe). But we have successfully compiled it on mac and linux boxes.  
 If you have any trouble, just email ming@cs.jhu.edu.
 
 Before you run the executable, make sure the driver of your video card is 
@@ -20,7 +20,7 @@ up to date (the generic one coming with windows does not work).
 
 The general usage of the executable is:
 
-Rambo3D.exe --img img.data --ano ano.data --dRes xRes yRes zRes
+VolumeViewer.exe --img img.data --ano ano.data --dRes xRes yRes zRes
 
 where img.data and ano.data are the volumes downloaded from the cut-out service,
 and xRes/yRes/zRes together specify the data resolution.
@@ -57,7 +57,7 @@ Demo Script
     SET IMGS=http://openconnecto.me/cutout/kasthuri11/hdf5/1/%XSTART%,%XEND%/%YSTART%,%YEND%/%ZSTART%,%ZEND%/
     hdf5Flatten.py %ANNO% ano.data
     hdf5Flatten.py %IMGS% img.data
-    Rambo3D.exe --dRes %XRES% %YRES% %ZRES% --img img.data --ano ano.data
+    VolumeViewer.exe --dRes %XRES% %YRES% %ZRES% --img img.data --ano ano.data
 
 
 User Interface
