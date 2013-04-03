@@ -112,3 +112,46 @@ of the setup interface.
 
 PS2. The webpage for this project is http://openconnectome.github.com/Rambo3D/
 
+
+======== For COMPILATION ON A MAC ==========
+
+The below procedure works well on my Air running Mac-OS 10.7.4
+
+1. Download and install Xcode if you don't have it yet: 
+https://developer.apple.com/xcode/
+Note that the latest Xcode seems not to come with GCC anymore (!!!). So you will need to do the following manually:
+Go to "Xcode->preference->downloads" and then click to install "Command Line Tools"
+After it's done, do "which gcc" to make sure it is there.
+
+2. Download and install Qt SDK 1.1.2 (selecting "Mac 64" option, of course):
+http://www.developer.nokia.com/info/sw.nokia.com/id/84801bfe-8517-4287-9829-014c6f572127/Qt_SDK_1_1_2.html
+Yes, this is an older version. You could try the latest release instead (http://qt-project.org/downloads) but I haven't tested it out, so no guarantee...
+
+3. Download and install GLEW as following:
+    1) download and extract the package from https://sourceforge.net/projects/glew/files/glew/1.9.0/glew-1.9.0.tgz/download
+    2) cd into the directory (doesn't matter where you extract btw)
+    3) do "make install"
+
+4. Download and compile VolumeViewer as following:
+    1) download and extract the source code (attached as "Source_2.zip" with this mail)
+    2) fire up "VolumeViewer.pro" by double-clicking
+    3) click "Done" (you should see that the default selects the "Desktop" configuration)
+    4) Compile the code by "Build->Build Project VolumeViewer" (or simply "Command+B")
+
+
+======== For EXECUTION ==========
+
+1. cd into the directory where the binary was created
+(starting for the source code directory, usually it should be at: ../VolumeViewer-build-desktop/VolumeViewer.app/Contents/MacOS/)
+
+2. Download and extract the attached "Supplementary.zip"
+
+3. Copy everything to the binary directory
+
+4. Run "./VolumeViewer --dRes 256 256 128 --img myImg.data --ano myAno.data"
+
+5. Ta-da!!
+
+
+--Ming
+
