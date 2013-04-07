@@ -112,8 +112,8 @@ of the setup interface.
 
 PS2. The webpage for this project is http://openconnectome.github.com/Rambo3D/
 
-
-======== For COMPILATION ON A MAC ==========
+For COMPILATION ON A MAC
+==================
 
 The below procedure works well on my Air running Mac-OS 10.7.4
 
@@ -130,16 +130,16 @@ Yes, this is an older version. You could try the latest release instead (http://
 3. Download and install GLEW as following:
     1) download and extract the package from https://sourceforge.net/projects/glew/files/glew/1.9.0/glew-1.9.0.tgz/download
     2) cd into the directory (doesn't matter where you extract btw)
-    3) do "make install"
+    3) do "make install" (you may need to be a sudoer to do this)
 
-4. Download and compile VolumeViewer as following:
+4. Download and compile Rambo3D as following:
     1) download and extract the source code (attached as "Source_2.zip" with this mail)
     2) fire up "VolumeViewer.pro" by double-clicking
     3) click "Done" (you should see that the default selects the "Desktop" configuration)
     4) Compile the code by "Build->Build Project VolumeViewer" (or simply "Command+B")
 
-
-======== For EXECUTION ==========
+FOR EXECUTION ON A MAC
+==================
 
 1. cd into the directory where the binary was created
 (starting for the source code directory, usually it should be at: ../VolumeViewer-build-desktop/VolumeViewer.app/Contents/MacOS/)
